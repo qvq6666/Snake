@@ -84,7 +84,7 @@ int main(){
     
     InitWindow(W,H,"贪吃蛇");
     SetExitKey(KEY_NULL);
-    SetTargetFPS(70);
+    SetTargetFPS(60);
     SetTraceLogLevel(LOG_NONE);
     RenderTexture2D freeze_frame = LoadRenderTexture(W,H);
     //======加载字体======//
@@ -177,7 +177,7 @@ int main(){
             stop_time = 0.2;
         }
         else if (game_difficulty == 2){
-            stop_time = 0.17;
+            stop_time = 0.15;
         }
         else{
             stop_time = 0.1;
