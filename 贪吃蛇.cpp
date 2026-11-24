@@ -49,12 +49,12 @@ int random(int a,int x){
     return dist(rng);
 }
 
-void SpawnFood(int &eat_gx, int &eat_gy, int snake_gx, int snake_gy, int bodyGx[], int bodyGy[], int snakeLen){
+void SpawnFood(int &eat_gx, int &eat_gy, int snake_gx, int snake_gy, int bodyGx[], int bodyGy[], int snakeLen,int &eat_type){
     int new_gx, new_gy;
     while(true){
         new_gx = random(0,19);
         new_gy = random(0,14);
-        
+        eat_type = random(1,100);
         int dx = new_gx - snake_gx;
         int dy = new_gy - snake_gy;
         if(dx < 0) dx = -dx;
@@ -76,7 +76,6 @@ void SpawnFood(int &eat_gx, int &eat_gy, int snake_gx, int snake_gy, int bodyGx[
         }
     }
 }
-
 int main(){
     //======初始化======//
     int W = 800;
@@ -171,7 +170,7 @@ int main(){
         //食物方块位置//
         int eat_gx = 9;
         int eat_gy = 9;
-        bool justAte = false;
+        int eat_type = random(1,100);//食物方块类型
         double stop_time = 0.1;
         if (game_difficulty == 1){//如果后面要在游戏失败后也能回到主见面要改这个和else if(game_start == 1)
             stop_time = 0.2;
@@ -205,12 +204,17 @@ int main(){
                 gx = bodyGx[0];
                 gy = bodyGy[0];
                 //是否吃到食物？
-                if(justAte){
+                if(gx == eat_gx && gy == eat_gy){
                     snakeLen++;
                     bodyGx[snakeLen - 1] = tailGx;
                     bodyGy[snakeLen - 1] = tailGy;
-                    justAte = false;
-                    score++;
+                    if (eat_type <= 70){
+                        score++;
+                    }
+                    else if (eat_type > 70 && eat_type <= 100){
+                        score += 2;
+                    }
+                    SpawnFood(eat_gx,eat_gy,gx,gy,bodyGx,bodyGy,snakeLen,eat_type);
                 }
             }
             //bool类型变量hitEdge判断是否游戏失败
@@ -294,10 +298,6 @@ int main(){
             for (int y = 0;y <= H;y += cell){
                 DrawLine(0,y,W,y,DARKGRAY);
             }
-            if (gx == eat_gx && gy == eat_gy){
-                SpawnFood(eat_gx,eat_gy,gx,gy,bodyGx,bodyGy,snakeLen);
-                justAte = true;
-            }
             // 绘制方块
             for(int i = 1;i < snakeLen;i++){
                 Rectangle seg = {
@@ -321,7 +321,13 @@ int main(){
                 (float)cell,
                 (float)cell
             };
-            DrawRectangleRec(eat_rec,YELLOW);
+            if (eat_type <= 70){
+                DrawRectangleRec(eat_rec,YELLOW);
+            }
+            else if (eat_type > 70 && eat_type <= 100){
+                DrawRectangleRec(eat_rec,PURPLE);
+            }
+            
             // 绘制文字
             if (score > high){
                 int fenShu[] = {0x5206,0x6570};//分数
