@@ -205,14 +205,19 @@ int main(){
                 gy = bodyGy[0];
                 //是否吃到食物？
                 if(gx == eat_gx && gy == eat_gy){
-                    snakeLen++;
-                    bodyGx[snakeLen - 1] = tailGx;
-                    bodyGy[snakeLen - 1] = tailGy;
                     if (eat_type <= 70){
                         score++;
+                        snakeLen++;
+                        bodyGx[snakeLen - 1] = tailGx;
+                        bodyGy[snakeLen - 1] = tailGy;
                     }
                     else if (eat_type > 70 && eat_type <= 100){
                         score += 2;
+                        snakeLen += 2;
+                        bodyGx[snakeLen - 2] = tailGx;
+                        bodyGy[snakeLen - 2] = tailGy;
+                        bodyGx[snakeLen - 1] = tailGx;
+                        bodyGy[snakeLen - 1] = tailGy;
                     }
                     SpawnFood(eat_gx,eat_gy,gx,gy,bodyGx,bodyGy,snakeLen,eat_type);
                 }
