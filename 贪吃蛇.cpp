@@ -51,10 +51,10 @@ int random(int a,int x){
 
 void SpawnFood(int &eat_gx, int &eat_gy, int snake_gx, int snake_gy, int bodyGx[], int bodyGy[], int snakeLen,int &eat_type){
     int new_gx, new_gy;
+    eat_type = random(1,100);
     while(true){
         new_gx = random(0,19);
         new_gy = random(0,14);
-        eat_type = random(1,100);
         int dx = new_gx - snake_gx;
         int dy = new_gy - snake_gy;
         if(dx < 0) dx = -dx;
