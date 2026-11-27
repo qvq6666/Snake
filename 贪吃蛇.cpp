@@ -14,7 +14,9 @@ int cnCodePoints[] = {
     0x6309,0x0045,0x0073,0x0063,0x9000,0x51FA,0x6E38,0x620F,//按ESC退出游戏
     0x6700,0x9AD8,0x5206,0x6570,//最高分数
     31616,21333,27169,24335,25353,39,49,39,44,26222,36890,27169,24335,25353,39,50,39,44,22256,38590,27169,24335,25353,39,51,39,//简单模式按'1',普通模式按'2',困难模式按'3'
-    24403,21069,27169,24335,58//当前模式:
+    24403,21069,27169,24335,58,//当前模式:
+    36820,22238,20027,33756,21333,//返回主菜单
+    77//M
 };
 
 int cnCodeCount = sizeof(cnCodePoints)/sizeof(int);
@@ -115,6 +117,10 @@ int main(){
                 game_start = 1;
                 goto GAME_STAR;
             }
+            if (IsKeyPressed(KEY_ESCAPE)){
+                new_high(score);
+                break;
+            }
             BeginDrawing();
             ClearBackground(BLACK);
             //调用汉字Unicode码点：贪吃蛇
@@ -129,6 +135,10 @@ int main(){
             int start_difficulty_Char[] = {31616,21333,27169,24335,25353,39,49,39,44,26222,36890,27169,24335,25353,39,50,39,44,22256,38590,27169,24335,25353,39,51,39};
             int start_temp = sizeof(start_difficulty_Char)/sizeof(int);
             DrawTextCodepoints(cnFont,start_difficulty_Char,start_temp,{160,450},30,2,YELLOW);
+            //调用汉字Unicode码点:按Esc键退出游戏
+            int start_exit_Char[] = {25353,69,115,99,38190,36864,20986,28216,25103};
+            int start_exit_temp = sizeof(start_exit_Char)/sizeof(int);
+            DrawTextCodepoints(cnFont,start_exit_Char,start_exit_temp,{215,380},35,2,RED);
             //调用汉字Unicode码点:当前模式:
             int Curr_Mod_Char[] = {24403,21069,27169,24335,58};
             int Curr_Mod_temp = sizeof(Curr_Mod_Char)/sizeof(int);
@@ -360,9 +370,14 @@ int main(){
                 game_start = 1;
                 goto GAME_STAR;
             }
-            else if (IsKeyDown(KEY_ESCAPE)){
+            if (IsKeyPressed(KEY_ESCAPE)){
                 break;
             }
+            if (IsKeyPressed(KEY_M)){
+                game_start = 0;
+                goto GAME_STAR;
+            }
+            
             BeginDrawing();
             DrawTextureRec(freeze_frame.texture, {0,0,800,-600}, {0,0}, (Color){255,255,255,160});
             int gameOver[] = {0x6E38,0x620F,0x7ED3,0x675F};//游戏结束
@@ -373,9 +388,13 @@ int main(){
             int rstCnt = sizeof(restartTip)/sizeof(int);
             DrawTextCodepoints(cnFont,restartTip,rstCnt,{200,250},30,2,WHITE);
 
-            int exitTip[] = {0x6309,0x0045,0x0073,0x0063,0x9000,0x51FA,0x6E38,0x620F};//按ESC退出游戏
+            int exitTip[] = {25353,69,115,99,38190,36864,20986,28216,25103};//按Esc键退出游戏
             int exitCnt = sizeof(exitTip)/sizeof(int);
             DrawTextCodepoints(cnFont,exitTip,exitCnt,{200,300},30,2,WHITE);
+
+            int return_txt_char[] = {25353,77,38190,36820,22238,20027,33756,21333};//按M键返回主菜单
+            int return_temp = sizeof(return_txt_char)/sizeof(int);
+            DrawTextCodepoints(cnFont,return_txt_char,return_temp,{200,350},30,2,WHITE);
             EndDrawing();
         }
     }
